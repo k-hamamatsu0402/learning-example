@@ -1,22 +1,28 @@
 version: '3'
 services:
-  db:
-    image: mysql:8
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_DATABASE: learning-example
-      MYSQL_USER: learning-example
-      MYSQL_PASSWORD: learning-example
-      MYSQL_ROOT_PASSWORD: root-test-pass
-    volumes:
-      - ./mysql/data:/var/lib/mysql:rw
-      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
-      - ./mysql/initdb:/docker-entrypoint-initdb.d:rw
+    db:
+        image: mysql:8
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: learning-example
+            MYSQL_USER: learning-example
+            MYSQL_PASSWORD: learning-example
+            MYSQL_ROOT_PASSWORD: root-test-pass
+        volumes:
+            - ./mysql/data:/var/lib/mysql:rw
+            - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+            - ./mysql/initdb:/docker-entrypoint-initdb.d:rw
 
-  app:
-    build: .
-    volumes:
-      - "../:/var/www/html"
-    ports:
-      - "8000:80"
+    app:
+        build: .
+        volumes:
+            - "../:/var/www/html"
+            - "storage-volumes:/var/www/html/storage/framework"
+            - "vendor-volumes:/var/www/html/vendor"
+        ports:
+            - "8000:80"
+
+volumes:
+    storage-volumes:
+    vendor-volumes:
